@@ -43,3 +43,6 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# training output (checkpoints, tensorboard, best models)
+runs/

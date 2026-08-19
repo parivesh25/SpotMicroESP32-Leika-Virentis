@@ -1,0 +1,134 @@
+<mujoco model="spot_pico_terrain">
+  <!-- Terrain variant of scene.xml: the flat floor is replaced by a heightfield ("terrain")
+       that QuadrupedMjEnv fills with smooth random bumps per episode (src/sim/terrain.py).
+       Robot geometry (bodies, joints, actuators, sensors) is identical to scene.xml. -->
+  <option timestep="0.002" iterations="50" solver="Newton"/>
+  <default><geom conaffinity="0"/></default>
+  <compiler angle="radian" meshdir="meshes/"/>
+
+  <asset>
+    <hfield name="terrain" nrow="129" ncol="129" size="2.0 2.0 0.03 0.1"/>
+    <mesh name="base_link" file="base_link.stl"/>
+    <mesh name="fr_tibia" file="fr_tibia.stl"/>
+    <mesh name="fr_femur" file="fr_femur.stl"/>
+    <mesh name="fr_coxa" file="fr_coxa.stl"/>
+    <mesh name="fl_tibia" file="fl_tibia.stl"/>
+    <mesh name="fl_femur" file="fl_femur.stl"/>
+    <mesh name="fl_coxa" file="fl_coxa.stl"/>
+    <mesh name="rr_tibia" file="rr_tibia.stl"/>
+    <mesh name="rr_femur" file="rr_femur.stl"/>
+    <mesh name="rr_coxa" file="rr_coxa.stl"/>
+    <mesh name="rl_tibia" file="rl_tibia.stl"/>
+    <mesh name="rl_femur" file="rl_femur.stl"/>
+    <mesh name="rl_coxa" file="rl_coxa.stl"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <geom name="floor" type="hfield" hfield="terrain" contype="1" conaffinity="1" rgba="0.5 0.55 0.6 1"/>
+    <body name="base_link" pos="0 0 0.13">
+      <freejoint name="root"/>
+      <site name="imu" pos="0 0 0" size="0.01" rgba="1 0 0 0.3"/>
+      <inertial pos="0.000337 -0.010367 0.000363" quat="0.505214 0.49863 -0.49994 0.496173" mass="0.33629" diaginertia="0.0013827 0.00110394 0.000394446"/>
+      <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="base_link"/>
+      <geom type="mesh" rgba="0.25 0.25 0.27 1" mesh="base_link"/>
+      <body name="fr_coxa" pos="-0.039922 -0.099805 5.8e-05">
+        <inertial pos="-0.018943 -0.001678 -0.002859" quat="0.429206 0.553943 0.50624 0.502643" mass="0.043888" diaginertia="1.06239e-05 8.70681e-06 4.59932e-06"/>
+        <joint name="fr_hip_joint" pos="0 0 0" axis="0 -1 0" range="-1.48353 1.48353" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+        <geom pos="0.039922 0.099805 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="fr_coxa"/>
+        <geom pos="0.039922 0.099805 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="fr_coxa"/>
+        <body name="fr_femur" pos="-0.0513 0.004305 0">
+          <inertial pos="0.00916 0.013089 -0.011265" quat="0.628961 0.281704 -0.280076 0.668288" mass="0.010998" diaginertia="5.01423e-06 4.95224e-06 8.63526e-07"/>
+          <joint name="fr_femur_joint" pos="0 0 0" axis="-1 0 0" range="-2.35619 0.7854" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+          <geom pos="0.091222 0.0955 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="fr_femur"/>
+          <geom pos="0.091222 0.0955 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="fr_femur"/>
+          <body name="fr_tibia" pos="0.00215 0.043903 -0.037783">
+            <inertial pos="0.006 -0.019087 -0.01787" quat="0.386755 0.922182 0 0" mass="0.011568" diaginertia="5.45e-06 5.4354e-06 3.34603e-07"/>
+            <joint name="fr_tibia_joint" pos="0 0 0" axis="-1 0 0" range="-1.0472 0.95993" actuatorfrcrange="-0.21 0.21" damping="0.01" frictionloss="0.02"/>
+            <geom pos="0.089072 0.051597 0.037725" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="fr_tibia"/>
+            <geom name="foot_fr" size="0.009" pos="0.006 -0.037123 -0.037123" contype="1" conaffinity="1" rgba="0.25 0.25 0.27 1"/>
+            <site name="foot_fr" pos="0.006 -0.037123 -0.037123" size="0.004" rgba="0 1 0 0.4"/>
+          </body>
+        </body>
+      </body>
+      <body name="fl_coxa" pos="0.040078 -0.095155 5.8e-05">
+        <inertial pos="0.018498 -0.00219 -0.002737" quat="0.495054 0.505705 0.429678 0.560857" mass="0.044625" diaginertia="1.07388e-05 8.88157e-06 4.73961e-06"/>
+        <joint name="fl_hip_joint" pos="0 0 0" axis="0 1 0" range="-1.48353 1.48353" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+        <geom pos="-0.040078 0.095155 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="fl_coxa"/>
+        <geom pos="-0.040078 0.095155 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="fl_coxa"/>
+        <body name="fl_femur" pos="0.0516 0.004305 0">
+          <inertial pos="-0.00916 0.013089 -0.011265" quat="0.668288 0.280076 -0.281704 0.628961" mass="0.010998" diaginertia="5.01423e-06 4.95224e-06 8.63526e-07"/>
+          <joint name="fl_femur_joint" pos="0 0 0" axis="-1 0 0" range="-1.5708 1.5708" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+          <geom pos="-0.091678 0.09085 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="fl_femur"/>
+          <geom pos="-0.091678 0.09085 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="fl_femur"/>
+          <body name="fl_tibia" pos="-0.0143 0.043903 -0.037783">
+            <inertial pos="0.006 -0.019087 -0.01787" quat="0.386755 0.922182 0 0" mass="0.011568" diaginertia="5.45e-06 5.4354e-06 3.34603e-07"/>
+            <joint name="fl_tibia_joint" pos="0 0 0" axis="1 0 0" range="-0.95993 0.7854" actuatorfrcrange="-0.21 0.21" damping="0.01" frictionloss="0.02"/>
+            <geom pos="-0.077378 0.046947 0.037725" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="fl_tibia"/>
+            <geom name="foot_fl" size="0.009" pos="0.006 -0.037123 -0.037123" contype="1" conaffinity="1" rgba="0.25 0.25 0.27 1"/>
+            <site name="foot_fl" pos="0.006 -0.037123 -0.037123" size="0.004" rgba="0 1 0 0.4"/>
+          </body>
+        </body>
+      </body>
+      <body name="rr_coxa" pos="-0.039922 0.077545 5.8e-05">
+        <inertial pos="-0.018943 -0.001678 -0.002859" quat="0.429206 0.553943 0.50624 0.502643" mass="0.043888" diaginertia="1.06239e-05 8.70681e-06 4.59932e-06"/>
+        <joint name="rr_hip_joint" pos="0 0 0" axis="0 -1 0" range="-1.48353 1.48353" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+        <geom pos="0.039922 -0.077545 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="rr_coxa"/>
+        <geom pos="0.039922 -0.077545 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="rr_coxa"/>
+        <body name="rr_femur" pos="-0.0513 0.004305 0">
+          <inertial pos="0.00916 0.013089 -0.011265" quat="0.628961 0.281704 -0.280076 0.668288" mass="0.010998" diaginertia="5.01423e-06 4.95224e-06 8.63526e-07"/>
+          <joint name="rr_femur_joint" pos="0 0 0" axis="-1 0 0" range="-2.35619 0.7854" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+          <geom pos="0.091222 -0.08185 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="rr_femur"/>
+          <geom pos="0.091222 -0.08185 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="rr_femur"/>
+          <body name="rr_tibia" pos="0.00215 0.043903 -0.037783">
+            <inertial pos="0.006 -0.019087 -0.01787" quat="0.386755 0.922182 0 0" mass="0.011568" diaginertia="5.45e-06 5.4354e-06 3.34603e-07"/>
+            <joint name="rr_tibia_joint" pos="0 0 0" axis="-1 0 0" range="-1.0472 0.95993" actuatorfrcrange="-0.21 0.21" damping="0.01" frictionloss="0.02"/>
+            <geom pos="0.089072 -0.125753 0.037725" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="rr_tibia"/>
+            <geom name="foot_rr" size="0.009" pos="0.006 -0.037123 -0.037123" contype="1" conaffinity="1" rgba="0.25 0.25 0.27 1"/>
+            <site name="foot_rr" pos="0.006 -0.037123 -0.037123" size="0.004" rgba="0 1 0 0.4"/>
+          </body>
+        </body>
+      </body>
+      <body name="rl_coxa" pos="0.040078 0.077545 5.8e-05">
+        <inertial pos="0.018498 -0.00219 -0.002737" quat="0.495054 0.505705 0.429678 0.560857" mass="0.044625" diaginertia="1.07388e-05 8.88157e-06 4.73961e-06"/>
+        <joint name="rl_hip_joint" pos="0 0 0" axis="0 1 0" range="-1.48353 1.48353" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+        <geom pos="-0.040078 -0.077545 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="rl_coxa"/>
+        <geom pos="-0.040078 -0.077545 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="rl_coxa"/>
+        <body name="rl_femur" pos="0.0516 0.004305 0">
+          <inertial pos="-0.00916 0.013089 -0.011265" quat="0.668288 0.280076 -0.281704 0.628961" mass="0.010998" diaginertia="5.01423e-06 4.95224e-06 8.63526e-07"/>
+          <joint name="rl_femur_joint" pos="0 0 0" axis="-1 0 0" range="-1.5708 1.5708" actuatorfrcrange="-0.34 0.34" damping="0.01" frictionloss="0.02"/>
+          <geom pos="-0.091678 -0.08185 -5.8e-05" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="rl_femur"/>
+          <geom pos="-0.091678 -0.08185 -5.8e-05" quat="1 0 0 0" type="mesh" rgba="0.25 0.25 0.27 1" mesh="rl_femur"/>
+          <body name="rl_tibia" pos="-0.0143 0.043903 -0.037783">
+            <inertial pos="0.006 -0.019087 -0.01787" quat="0.386755 0.922182 0 0" mass="0.011568" diaginertia="5.45e-06 5.4354e-06 3.34603e-07"/>
+            <joint name="rl_tibia_joint" pos="0 0 0" axis="1 0 0" range="-0.95993 0.7854" actuatorfrcrange="-0.21 0.21" damping="0.01" frictionloss="0.02"/>
+            <geom pos="-0.077378 -0.125753 0.037725" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.25 0.25 0.27 1" mesh="rl_tibia"/>
+            <geom name="foot_rl" size="0.009" pos="0.006 -0.037123 -0.037123" contype="1" conaffinity="1" rgba="0.25 0.25 0.27 1"/>
+            <site name="foot_rl" pos="0.006 -0.037123 -0.037123" size="0.004" rgba="0 1 0 0.4"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="fr_hip_joint" joint="fr_hip_joint" kp="4.0" dampratio="1" ctrlrange="-1.4835 1.4835" forcerange="-0.34 0.34"/>
+    <position name="fr_femur_joint" joint="fr_femur_joint" kp="4.0" dampratio="1" ctrlrange="-2.3562 0.7854" forcerange="-0.34 0.34"/>
+    <position name="fr_tibia_joint" joint="fr_tibia_joint" kp="4.0" dampratio="1" ctrlrange="-1.0472 0.9599" forcerange="-0.34 0.34"/>
+    <position name="fl_hip_joint" joint="fl_hip_joint" kp="4.0" dampratio="1" ctrlrange="-1.4835 1.4835" forcerange="-0.34 0.34"/>
+    <position name="fl_femur_joint" joint="fl_femur_joint" kp="4.0" dampratio="1" ctrlrange="-1.5708 1.5708" forcerange="-0.34 0.34"/>
+    <position name="fl_tibia_joint" joint="fl_tibia_joint" kp="4.0" dampratio="1" ctrlrange="-0.9599 0.7854" forcerange="-0.34 0.34"/>
+    <position name="rr_hip_joint" joint="rr_hip_joint" kp="4.0" dampratio="1" ctrlrange="-1.4835 1.4835" forcerange="-0.34 0.34"/>
+    <position name="rr_femur_joint" joint="rr_femur_joint" kp="4.0" dampratio="1" ctrlrange="-2.3562 0.7854" forcerange="-0.34 0.34"/>
+    <position name="rr_tibia_joint" joint="rr_tibia_joint" kp="4.0" dampratio="1" ctrlrange="-1.0472 0.9599" forcerange="-0.34 0.34"/>
+    <position name="rl_hip_joint" joint="rl_hip_joint" kp="4.0" dampratio="1" ctrlrange="-1.4835 1.4835" forcerange="-0.34 0.34"/>
+    <position name="rl_femur_joint" joint="rl_femur_joint" kp="4.0" dampratio="1" ctrlrange="-1.5708 1.5708" forcerange="-0.34 0.34"/>
+    <position name="rl_tibia_joint" joint="rl_tibia_joint" kp="4.0" dampratio="1" ctrlrange="-0.9599 0.7854" forcerange="-0.34 0.34"/>
+  </actuator>
+
+  <sensor>
+    <framequat name="imu_quat" objtype="site" objname="imu"/>
+    <gyro name="imu_gyro" site="imu"/>
+    <accelerometer name="imu_acc" site="imu"/>
+  </sensor>
+</mujoco>
